@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/fontawesome.min.css"> 
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"><!-- Link para a versão mais recente do Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <style>
+        .done{
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body id="app">
+    <div id="app" class="container">
+        <h1 class="text-center bg-light p-3 text-success">TRELLO DA SHOPEE</h1>
+
+        <main>
+            <form class="my-3 gap-2">
+                <textarea placeholder="Faça a sua anotação" v-model="newNote.text" class="form-control mb-2" rows="5"></textarea>
+                <div class="btn bg-success shadow px-4 text-white" v-on:click="addList(); storeList()">Criar</div>
+            </form>
+
+
+
+
+
+
+
+
+
+            <div class="card">
+                <div class="card-header">
+                    <h6>Anotações</h6>
+                </div>
+
+            
+                <div class="card-body d-flex gap-3 flex-wrap">
+                    <div 
+                    v-for="(list, i) in lists"                    
+                    class="d-flex flex-column card w-25 p-2"
+                    >
+                        <header class="d-flex justify-content-between">
+                            <h4>{{list.text}}</h4>
+                            <button class="btn bg-light shadow" @click.stop="delete(i)"><i class="fa-solid fa-trash text-danger"></i></button>
+                        </header>
+
+                        <ol>
+                            <li 
+                            v-for="(task, i) in list.tasks" 
+                            @click="task.done = !task.done; storeList()"
+                            :class="{done : task.done}">
+                                {{task.task}}
+                            </li>
+                        </ol>
+
+                        <div class="d-flex gap-2">
+                            <input type="text" class="form-control" v-model="newTask.task" placeholder="Adicionar tarefa">
+                            <button @click.stop="addTask(i)" class="btn bg-success text-white"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>                   
+                </div>                
+            </div>
+
+
+
+
+
+
+
+            <div 
+            class="btn bg-danger text-white mt-2 shadow"
+            v-on:click="lists = []; storeList()"
+            v-if="lists.length >= 1"
+            >
+                Apagar tudo
+            </div>
+        </main>
+    </div>
+</body>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script><!--Link do Vuejs-->
+<script src="script.js"></script>
+</html>
