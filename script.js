@@ -3,11 +3,17 @@ const app = {
         let lists = []
 
         return{
+            teste: new Date().getDate(),
+
+            dataConclusao:'',
+
             newNote:{
+                conclusao:'',
                 data:'',
                 text:'',
                 tasks:[]
             },
+            
             newTask:{done:false, task:''},
             lists,
             n_quadros:''
@@ -29,6 +35,7 @@ const app = {
                 this.lists.push(this.newNote)              
 
                 this.newNote = {
+                    conclusao:'',
                     data:'',
                     text:'',
                     tasks:[]
@@ -42,6 +49,16 @@ const app = {
         },
 
         storeList(){
+            localStorage.setItem("tarefa", JSON.stringify(this.lists))
+        },
+
+
+
+
+
+        //ADICIONADO DATA DE CONCLUSÃO
+        addDataConclusao(i){
+            this.lists[i].conclusao = this.dataConclusao
             localStorage.setItem("tarefa", JSON.stringify(this.lists))
         },
 
@@ -87,6 +104,38 @@ const app = {
             let tt_quadros = document.getElementsByName("quadro")
             this.n_quadros = tt_quadros.length
             return this.n_quadros
+        },
+
+
+
+
+
+        //EDITANDO O TÍTULO DO QUADRO
+        editTitle(i){
+            var novoTitulo = this.lists[i].text
+            this.lists[i].text = novoTitulo
+            localStorage.setItem("tarefa", JSON.stringify(this.lists))
+        },
+
+
+
+        //PEGANDO A DATA
+        dataHoje(){
+            let dia = new Date().getDate()
+            if(dia < 10){
+                dia = '0'+dia
+            }
+
+            let mes = new Date().getMonth()
+            if(mes < 10){
+                mes = '0'+mes
+            }
+
+            let ano = new Date().getFullYear()
+
+            let dataHoje = `${dia}/${mes}/${ano}`
+
+            return dataHoje          
         }
     },
     
@@ -106,6 +155,7 @@ const app = {
     //EXIBINDO O NUEMRO TOTAL DE QUADROS APÓS CARREGAMNETO DA PÁGINA
     mounted(){
         this.total_quadros()
+        this.dataHoje()
     }
     /*
     updated(){
