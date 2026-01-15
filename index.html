@@ -38,31 +38,52 @@
             line-height: 5px;
         }
 
+        ul li{
+            color: white;
+        }
+
+
+        h5{
+            color: rgb(215, 255, 215);
+        }
+
+        .container-cards{
+            display: flex;
+            gap: 10px;
+            flex-wrap: nowrap;
+        }
+
         .quadro{
             width: 400px;
-            min-width: 350px;
-            flex: 1;
+            background-color: rgba(0, 0, 0, 0.219);
         }
 
         .done{
             text-decoration: line-through;
         }
+
+        .inputTask{
+            background: transparent;
+            border: none;
+            display: inline;
+            width: auto;
+        }
     </style>
 
 </head>
 <body>
-    <div id="app" class="container-lg">
+    <div id="app" class="container-lg mb-5">
         <header class="p-3">
-            <h1 class="text-center text-white">AGENDA VIRTUAL</h1>   
+            <h1 class="text-center text-white">{{saudacao}}</h1>   
         </header>
         
 
         <main>
             <!--SESSÃO DE CRIAÇÃO DO QUADRO-->
-            <form class="d-flex align-items-center gap-2 my-3">
-                <input type="text" placeholder="Título do quadro" v-model="newNote.text" class="form-control bg-opacity-50">
+            <div class="d-flex align-items-center gap-2 my-3">
+                <input type="text" placeholder="Título do quadro" v-model="newNote.text" v-on:keyup.enter="addList(); storeList()" class="form-control bg-opacity-50">
                 <div class="btn bg-secondary px-4 text-white" v-on:click="addList(); storeList()">Criar</div>
-            </form>
+            </div>
 
 
 
@@ -74,34 +95,33 @@
 
             <!--CONTAINER DOS QUADROS-->
             <div class="card bg-dark bg-opacity-50">
-                <div class="card-header border-0 bg-dark bg-opacity-50">
+                <div class="card-header border-0 bg-dark bg-opacity-25">
                     <h5 class="text-white">Quadros: {{n_quadros}}</h5>
                 </div>
 
             
-                <div class="card-body d-flex gap-3 flex-wrap">
+                <div class="container-cards card-body overflow-auto">
                     <!--quadro-->
                     <div 
                     name="quadro"
                     v-for="(list, i) in lists"                    
-                    class="quadro card p-2 shadow bg-light"
+                    class="quadro card p-2 shadow"
                     >
                         <header>
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex gap-1">
-                                    <input type="text"  
+                                    <!-- <input type="text"  
                                     id="datepicker" 
                                     placeholder="Data de conclusão" 
                                     v-model="dataConclusao" 
                                     class="form-control w-50"
                                     v-on:input="addDataConclusao(i)"
-                                    />
+                                    /> -->
 
                                     <p class="pt-2" :class="list.conclusao == dataHoje() ? 'text-danger' : ''">
                                         {{list.conclusao}}
                                     </p>
-                                    {{teste}}
-                                
+                                    <!-- {{teste}}            -->
                                 </div>
                                 <!--<p class="text-center">{{list.data}}</p>-->
                                 <button class="btn bg-light shadow" @click="this.lists.splice(i, 1); saveDelete()"><i class="fa-solid fa-trash text-danger"></i></button>  
@@ -110,27 +130,30 @@
                             <input type="text"
                              v-model="list.text" 
                              v-on:input="editTitle(i)" 
-                             class="d-inlinev border-0 bg-transparent fs-5" 
-                             style="outline: none;"
+                             class="d-inline border-0 bg-transparent fs-5" 
+                             style="outline: none; color: rgb(255, 255, 255); font-weight: bold;"
                              title="Editar"
                             >
-                            <hr> 
+                            <hr class="border-white" style="margin-top: -1px;"> 
                         </header>
                         
 
-                        <ol class="px-3">
+                        <ul>
                             <li
                             class="mb-3" 
-                            v-for="(task, i) in list.tasks" 
-                            @click="task.done = !task.done; storeList()"
-                            :class="{done : task.done}">
-                                {{task.task}}
+                            v-for="(task, i) in list.tasks">
+                                <div  @click="task.done = !task.done; storeList()" :class="{done : task.done}">
+                                    <span style="color: rgb(206, 255, 224);"><strong>{{task.data}}: </strong></span> 
+                                    <span>{{task.task}}</span>    
+                                </div>
+                                
+                                
                             </li>
-                        </ol>
+                        </ul>
 
                         <div class="d-flex gap-2">
                             <input type="text" class="form-control" v-model="newTask.task" placeholder="Adicionar tarefa">
-                            <button @click.stop="addTask(i)" class="btn bg-success text-white"><i class="fa-solid fa-plus"></i></button>
+                            <button @click.stop="addTask(i, dataHoje())" class="btn bg-light text-white"><i class="fa-solid fa-plus text-secondary"></i></button>
                         </div>
                     </div>                   
                 </div>                

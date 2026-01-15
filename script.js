@@ -3,6 +3,7 @@ const app = {
         let lists = []
 
         return{
+            saudacao:"",
             teste: new Date().getDate(),
 
             dataConclusao:'',
@@ -22,11 +23,30 @@ const app = {
 
 
     methods:{
+        // Saldação
+        saldacao(){
+            setInterval(()=>{
+                let horas = new Date().getHours()
+                
+                if(horas >= 6 && horas < 12){
+                    this.saudacao = "BOM DIA!"
+                }
+                else if(horas >= 12 && horas < 18){
+                    this.saudacao = "BOA TARDE!"
+                }
+                else if(horas >= 18 || horas < 6){
+                    this.saudacao = "BOA NOITE!"
+                }
+            }, 1000)
+        },
+
+
+
         //ADICIONANDO NOVO QUADRO
         addList(){
             if(this.newNote.text != ''){
                 let dia = new Date().getDate()
-                let mes = new Date().getMonth()
+                let mes = new Date().getMonth() + 1
                 let ano = new Date().getFullYear()
                 let data = `${dia}/${mes}/${ano}`
                 
@@ -67,11 +87,14 @@ const app = {
 
 
         //ADICIONANDO NOVA TAREFA   
-        addTask(i){
+        addTask(i, dataHoje){
             if(this.newTask.task != ''){
-                console.log(i)
-                this.lists[i].tasks.push(this.newTask)
+                //Atributo de  Data de criação de tarefa adicionada no objeto newTak
+                this.newTask.data = dataHoje
 
+                // Objeto newTask adicionado ao atributo tasks do objeto principal newNote
+                this.lists[i].tasks.push(this.newTask)
+                console.log(this.lists[i].tasks)
                 this.newTask = {
                     done: false
                 }
@@ -126,7 +149,7 @@ const app = {
                 dia = '0'+dia
             }
 
-            let mes = new Date().getMonth()
+            let mes = new Date().getMonth() + 1
             if(mes < 10){
                 mes = '0'+mes
             }
@@ -156,6 +179,7 @@ const app = {
     mounted(){
         this.total_quadros()
         this.dataHoje()
+        this.saldacao()
     }
     /*
     updated(){
