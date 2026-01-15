@@ -22,7 +22,7 @@
         }
 
         body{
-            background-image: url('imgs/wallpaper.jpg');
+            /* background-image: url('imgs/boa-noite.jpg'); */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -30,9 +30,8 @@
 
         h1{
             font-weight: bold;
-            background: linear-gradient(to right, #771919, #FAA9A8); /* Degradê */
-            -webkit-background-clip: text; /* Aplica o fundo ao texto */
-            -webkit-text-fill-color: transparent; /* Torna o texto transparente */
+            color: #771919;
+            background-color: rgba(255, 255, 255, 0.171);
         }
         h4{
             line-height: 5px;
@@ -44,18 +43,25 @@
 
 
         h5{
-            color: rgb(215, 255, 215);
+            color: white;
         }
 
         .container-cards{
             display: flex;
-            gap: 10px;
+            gap: 14px;
             flex-wrap: nowrap;
+            overflow-x: scroll;
         }
 
         .quadro{
-            width: 400px;
+            min-width: 400px!important;
+            max-width: 400px!important;
             background-color: rgba(0, 0, 0, 0.219);
+            transition: all ease-in-out 0.2s
+        }
+
+        .quadro:hover{
+            transform: scale(1.02);
         }
 
         .done{
@@ -71,17 +77,27 @@
     </style>
 
 </head>
+
+
+
 <body>
     <div id="app" class="container-lg mb-5">
         <header class="p-3">
-            <h1 class="text-center text-white">{{saudacao}}</h1>   
+            <h1 class="text-center">{{saudacao}}</h1>   
         </header>
         
 
         <main>
             <!--SESSÃO DE CRIAÇÃO DO QUADRO-->
             <div class="d-flex align-items-center gap-2 my-3">
-                <input type="text" placeholder="Título do quadro" v-model="newNote.text" v-on:keyup.enter="addList(); storeList()" class="form-control bg-opacity-50">
+                <input 
+                type="text" 
+                placeholder="Título do quadro" 
+                v-model="newNote.text" 
+                v-on:keyup.enter="addList(); storeList()" 
+                class="form-control bg-opacity-50"
+                style="width: 320px;"
+                >
                 <div class="btn bg-secondary px-4 text-white" v-on:click="addList(); storeList()">Criar</div>
             </div>
 
@@ -105,36 +121,22 @@
                     <div 
                     name="quadro"
                     v-for="(list, i) in lists"                    
-                    class="quadro card p-2 shadow"
+                    class="quadro card p-2 shadow border-dark"
                     >
                         <header>
                             <div class="d-flex justify-content-between">
-                                <div class="d-flex gap-1">
-                                    <!-- <input type="text"  
-                                    id="datepicker" 
-                                    placeholder="Data de conclusão" 
-                                    v-model="dataConclusao" 
-                                    class="form-control w-50"
-                                    v-on:input="addDataConclusao(i)"
-                                    /> -->
-
-                                    <p class="pt-2" :class="list.conclusao == dataHoje() ? 'text-danger' : ''">
-                                        {{list.conclusao}}
-                                    </p>
-                                    <!-- {{teste}}            -->
-                                </div>
-                                <!--<p class="text-center">{{list.data}}</p>-->
-                                <button class="btn bg-light shadow" @click="this.lists.splice(i, 1); saveDelete()"><i class="fa-solid fa-trash text-danger"></i></button>  
+                                <input type="text"
+                                v-model="list.text" 
+                                v-on:input="editTitle(i)" 
+                                class="d-inline border-0 bg-transparent fs-5" 
+                                style="outline: none; color: rgb(255, 255, 255); font-weight: bold;"
+                                title="Editar"
+                                >    
+                                <button class="btn bg-light shadow" @click="saveDelete(i, list.text)"><i class="fa-solid fa-trash text-danger"></i></button>               
                             </div>
                         
-                            <input type="text"
-                             v-model="list.text" 
-                             v-on:input="editTitle(i)" 
-                             class="d-inline border-0 bg-transparent fs-5" 
-                             style="outline: none; color: rgb(255, 255, 255); font-weight: bold;"
-                             title="Editar"
-                            >
-                            <hr class="border-white" style="margin-top: -1px;"> 
+                            
+                            <hr class="border-white"> 
                         </header>
                         
 

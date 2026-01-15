@@ -4,6 +4,7 @@ const app = {
 
         return{
             saudacao:"",
+            papelParede:"",
             teste: new Date().getDate(),
 
             dataConclusao:'',
@@ -30,12 +31,18 @@ const app = {
                 
                 if(horas >= 6 && horas < 12){
                     this.saudacao = "BOM DIA!"
+                    this.papelParede = "imgs/bom-dia.jpg"
+                    document.querySelector("body").style.backgroundImage = "url('imgs/bom-dia.jpg')"
                 }
                 else if(horas >= 12 && horas < 18){
                     this.saudacao = "BOA TARDE!"
+                    this.papelParede = "imgs/boa-tarde.jpg"
+                    document.querySelector("body").style.backgroundImage = "url('imgs/boa-tarde.jpg')"
                 }
                 else if(horas >= 18 || horas < 6){
                     this.saudacao = "BOA NOITE!"
+                    this.papelParede = "imgs/boa-noite.jpg"
+                    document.querySelector("body").style.backgroundImage = "url('imgs/boa-noite.jpg')"
                 }
             }, 1000)
         },
@@ -111,8 +118,14 @@ const app = {
 
 
         //DELETANDO QUADRO
-        saveDelete(){
-            localStorage.setItem("tarefa", JSON.stringify(this.lists))
+        saveDelete(i, titulo){
+            var confirmar = confirm(`Deseja deletar o quadro ${titulo}?`)
+
+            if(confirmar){
+                this.lists.splice(i, 1)
+                localStorage.setItem("tarefa", JSON.stringify(this.lists))    
+            }
+            
         },
         
         handleClick(){
